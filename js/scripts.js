@@ -1,34 +1,24 @@
-/*!
-* Start Bootstrap - Resume v7.0.6 (https://startbootstrap.com/theme/resume)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-resume/blob/master/LICENSE)
-*/
-//
-// Scripts
-// 
+// Kasra Ahmadi — personal site. Lightweight vanilla-JS scrollspy for the top nav
+// (no framework dependency — replaces the old Bootstrap ScrollSpy).
 
-window.addEventListener('DOMContentLoaded', event => {
+window.addEventListener('DOMContentLoaded', () => {
+  const navLinks = Array.from(document.querySelectorAll('.topnav-links a'));
+  const sections = navLinks
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
 
-    // Activate Bootstrap scrollspy on the main nav element
-    const sideNav = document.body.querySelector('#sideNav');
-    if (sideNav) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#sideNav',
-            rootMargin: '0px 0px -40%',
-        });
-    };
+  if (!sections.length) return;
 
-    // Collapse responsive navbar when toggler is visible
-    const navbarToggler = document.body.querySelector('.navbar-toggler');
-    const responsiveNavItems = [].slice.call(
-        document.querySelectorAll('#navbarResponsive .nav-link')
-    );
-    responsiveNavItems.map(function (responsiveNavItem) {
-        responsiveNavItem.addEventListener('click', () => {
-            if (window.getComputedStyle(navbarToggler).display !== 'none') {
-                navbarToggler.click();
-            }
-        });
+  const setActive = () => {
+    const scrollPos = window.scrollY + 90;
+    let activeIndex = 0;
+    sections.forEach((section, i) => {
+      if (section.offsetTop <= scrollPos) activeIndex = i;
     });
+    navLinks.forEach(link => link.classList.remove('active'));
+    navLinks[activeIndex].classList.add('active');
+  };
 
+  setActive();
+  window.addEventListener('scroll', setActive, { passive: true });
 });
