@@ -85,9 +85,10 @@
                 <strong>Best Paper Award at IEEE S&amp;P 2025 Workshops</strong>.
             </p>
             <p class="lead">
-                I'm currently an ML Research Engineer Intern at RealmLabs, building production PII-detection and
-                model-routing systems for Claude Code — bridging side-channel and adversarial-ML research with
-                real-world ML security engineering.
+                I'm an ML Research Engineer Intern at RealmLabs, where I designed a compact frozen-backbone PII
+                span-localization model that beat OpenAI's dedicated 1.5B Privacy Filter under a shared leakage-free
+                evaluation, then shipped it into a production vLLM serving stack — bridging side-channel and
+                adversarial-ML research with real-world ML security engineering.
             </p>
         </section>
 
@@ -101,10 +102,10 @@
                     <span class="entry-date">May 2026 – Present</span>
                 </div>
                 <ul>
-                    <li>Developed PII privacy and security workflows using frozen Qwen 3.5 and Llama 3.1 models, achieving a 3% F1 score improvement over ModernBERT by disabling causal masking to capture full bidirectional context.</li>
-                    <li>Developing probe models on top of decoder hidden states to detect PII at the token level.</li>
-                    <li>Working on cost optimization and model routing for Claude Code by classifying session intent and routing sessions to the appropriate Claude model.</li>
-                    <li>Integrating vLLM with sparse autoencoders (SAEs) to capture token-level signals during generation in a single pass.</li>
+                    <li>Designed and trained an exact PII span-localization model — a 634K-parameter head (0.007% of the backbone) over a fully frozen Qwen 3.5-9B — that beat OpenAI's dedicated 1.5B Privacy Filter under one shared leakage-free harness: 0.837 vs. 0.654 mean micro-F1 across ai4privacy 200K/300K/400K.</li>
+                    <li>Removed the causal-decoder limitation without modifying the backbone, using a learned ELMo-style mixture over all 32 hidden-state layers, an external bidirectional attention read-out, and calibrated constrained Viterbi decoding.</li>
+                    <li>Consolidated generation, PII, sparse autoencoders, and role-aware probes into one FastAPI service over a shared frozen backbone, backed by a specialized vLLM fork exposing hidden states during prefill and decode with continuous batching and prefix caching.</li>
+                    <li>Benchmarked Qwen 3.5-9B on an A100-80GB: generation throughput scaled 64 → 267 tokens/s (concurrency 1 → 200) with zero errors, and validated 97.6% on-GPU SAE parity against the Hugging Face path.</li>
                 </ul>
             </div>
 
